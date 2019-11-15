@@ -15,6 +15,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = "HomeActivityTag";
 
+    // constant keys for the bundle
     public static final String LIVERPOOL_EXTRA = "liver";
     public static final String BARCELONA_EXTRA = "barcelona";
     public static final String MANCHESTER_EXTRA = "manchester";
