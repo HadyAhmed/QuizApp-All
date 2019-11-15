@@ -1,8 +1,6 @@
 package com.example.quizapp;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -21,6 +19,7 @@ public class HomeActivity extends AppCompatActivity {
     public static final String BARCELONA_EXTRA = "barcelona";
     public static final String MANCHESTER_EXTRA = "manchester";
 
+    // getting instance for each view
     private Button submitBtn;
     private EditText layoutAnswerEt;
 
@@ -28,12 +27,18 @@ public class HomeActivity extends AppCompatActivity {
     private CheckBox barcelonaB;
     private CheckBox manchesterB;
 
-    private boolean liverpoolCheckState, barcelonaCheckState, manchesterCheckState;
+    // this is the variables that hold the check state for the views
+    private boolean liverpoolCheckState;
+    private boolean barcelonaCheckState;
+    private boolean manchesterCheckState;
 
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
+        /*
+         * here we check for the restored values in the bundle keys
+         */
         // TODO: 11/15/2019 check for the restored variables here
         if (savedInstanceState.containsKey(LIVERPOOL_EXTRA)) {
             liverpoolCheckState = savedInstanceState.getBoolean(LIVERPOOL_EXTRA);
@@ -47,30 +52,31 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // finding views by ids to use it
         submitBtn = findViewById(R.id.submit_btn);
-        layoutAnswerEt = findViewById(R.id.layout_answer);
-
         liverpoolB = findViewById(R.id.liverpool_cb);
         barcelonaB = findViewById(R.id.barcelona_cb);
         manchesterB = findViewById(R.id.manchester_cb);
+        layoutAnswerEt = findViewById(R.id.layout_answer);
 
         // TODO: 11/15/2019  setup your restored ui here
 
+        // changing the state for the restored variables
+        // note: that the default value for the first launch is false
+        // so nothing is checked by default
         liverpoolB.setChecked(liverpoolCheckState);
         manchesterB.setChecked(manchesterCheckState);
         barcelonaB.setChecked(barcelonaCheckState);
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
-        Log.i(TAG, "onSaveInstanceState: ");
-    }
-
+    /**
+     * this is where the action for click listeners of the submit button
+     */
     public void checkAnswers(View view) {
         String ans = layoutAnswerEt.getText().toString();
 
         boolean isValidAns = false;
+        // checking for answer input validation
         if (ans.contains("scrollview") && ans.length() >= 20) {
             isValidAns = true;
         }
@@ -86,11 +92,12 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-
+        // getting values from view states
         liverpoolCheckState = liverpoolB.isChecked();
         manchesterCheckState = manchesterB.isChecked();
         barcelonaCheckState = barcelonaB.isChecked();
 
+        // attach the variables to the bundle
         outState.putBoolean(LIVERPOOL_EXTRA, liverpoolCheckState);
         outState.putBoolean(MANCHESTER_EXTRA, manchesterCheckState);
         outState.putBoolean(BARCELONA_EXTRA, barcelonaCheckState);
