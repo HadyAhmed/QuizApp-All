@@ -1,6 +1,8 @@
 package com.example.quizapp;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -26,14 +28,17 @@ public class HomeActivity extends AppCompatActivity {
     private CheckBox barcelonaB;
     private CheckBox manchesterB;
 
+    private boolean liverpoolCheckState, barcelonaCheckState, manchesterCheckState;
+
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
+        // TODO: 11/15/2019 check for the restored variables here
         if (savedInstanceState.containsKey(LIVERPOOL_EXTRA)) {
-            liverpoolB.setChecked(savedInstanceState.getBoolean(LIVERPOOL_EXTRA));
-            manchesterB.setChecked(savedInstanceState.getBoolean(MANCHESTER_EXTRA));
-            barcelonaB.setChecked(savedInstanceState.getBoolean(BARCELONA_EXTRA));
+            liverpoolCheckState = savedInstanceState.getBoolean(LIVERPOOL_EXTRA);
+            manchesterCheckState = savedInstanceState.getBoolean(MANCHESTER_EXTRA);
+            barcelonaCheckState = savedInstanceState.getBoolean(BARCELONA_EXTRA);
         }
     }
 
@@ -48,6 +53,18 @@ public class HomeActivity extends AppCompatActivity {
         liverpoolB = findViewById(R.id.liverpool_cb);
         barcelonaB = findViewById(R.id.barcelona_cb);
         manchesterB = findViewById(R.id.manchester_cb);
+
+        // TODO: 11/15/2019  setup your restored ui here
+
+        liverpoolB.setChecked(liverpoolCheckState);
+        manchesterB.setChecked(manchesterCheckState);
+        barcelonaB.setChecked(barcelonaCheckState);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        Log.i(TAG, "onSaveInstanceState: ");
     }
 
     public void checkAnswers(View view) {
@@ -70,8 +87,12 @@ public class HomeActivity extends AppCompatActivity {
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putBoolean(LIVERPOOL_EXTRA, liverpoolB.isChecked());
-        outState.putBoolean(MANCHESTER_EXTRA, manchesterB.isChecked());
-        outState.putBoolean(BARCELONA_EXTRA, barcelonaB.isChecked());
+        liverpoolCheckState = liverpoolB.isChecked();
+        manchesterCheckState = manchesterB.isChecked();
+        barcelonaCheckState = barcelonaB.isChecked();
+
+        outState.putBoolean(LIVERPOOL_EXTRA, liverpoolCheckState);
+        outState.putBoolean(MANCHESTER_EXTRA, manchesterCheckState);
+        outState.putBoolean(BARCELONA_EXTRA, barcelonaCheckState);
     }
 }
